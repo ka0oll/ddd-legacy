@@ -44,7 +44,7 @@ class OrderBoTest {
     @InjectMocks
     private OrderBo orderBo;
 
-    @DisplayName("메뉴가 없는 주문을 할수 없다.")
+    @DisplayName("메뉴없이 주문을 하면 예외가 발생한다.")
     @Test
     void orderHasMenus() {
         //given
@@ -56,7 +56,7 @@ class OrderBoTest {
             .isThrownBy(() -> orderBo.create(order));
     }
 
-    @DisplayName("존재 하지 않는 메뉴로 주문을 할수 없다.")
+    @DisplayName("존재 하지 않는 메뉴로 주문을 하면 예외가 발생한다.")
     @Test
     void notExistMenu() {
         //given
@@ -68,7 +68,7 @@ class OrderBoTest {
             .isThrownBy(() -> orderBo.create(order));
     }
 
-    @DisplayName("존재 하지 않는 테이블에는 주문을 할수 없다.")
+    @DisplayName("존재 하지 않는 테이블에는 주문하면, 예외가 발생한다.")
     @Test
     void notExistTable() {
         //given
@@ -126,7 +126,7 @@ class OrderBoTest {
             .isEqualTo(orderStatus.name());
     }
 
-    @DisplayName("완료된 주문은 상태를 변경할수 없다.")
+    @DisplayName("완료된 주문은 상태를 변경하면 예외가 발생한다.")
     @ParameterizedTest
     @EnumSource(value = OrderStatus.class)
     void noneChangeStatus(OrderStatus orderStatus) {

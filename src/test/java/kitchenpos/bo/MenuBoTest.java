@@ -1,25 +1,22 @@
 package kitchenpos.bo;
 
-import static org.mockito.ArgumentMatchers.refEq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.anyLong;
-import static org.mockito.Mockito.spy;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
+import kitchenpos.bo.support.MenuBuilder;
+import kitchenpos.bo.support.MenuProductBuilder;
+import kitchenpos.bo.support.ProductBuilder;
 import kitchenpos.dao.MenuDao;
 import kitchenpos.dao.MenuGroupDao;
 import kitchenpos.dao.MenuProductDao;
 import kitchenpos.dao.ProductDao;
 import kitchenpos.model.Menu;
-import kitchenpos.model.Menu.MenuBuilder;
 import kitchenpos.model.MenuProduct;
-import kitchenpos.model.MenuProduct.MenuProductBuilder;
 import kitchenpos.model.Product;
-import kitchenpos.model.Product.ProductBuilder;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -73,7 +70,7 @@ class MenuBoTest {
             .isEqualTo(menu.getMenuProducts().size());
     }
 
-    @DisplayName("메뉴의 가격은 0원 이상이 아닐경우 실패한다.")
+    @DisplayName("메뉴의 가격은 0원 이상이 아니면, 예외가 발생한다.")
     @ParameterizedTest
     @NullSource
     @ValueSource(strings = {"-1000", "-2000"})
@@ -87,7 +84,7 @@ class MenuBoTest {
             .isThrownBy(() -> menuBo.create(menu));
     }
 
-    @DisplayName("존재 하지 않는 메뉴 그룹에 메뉴룰 등록할수 없다.")
+    @DisplayName("존재 하지 않는 메뉴 그룹에 메뉴를 등록하면, 예외가 발생한다.")
     @Test
     void inGroup() {
         //given
@@ -99,25 +96,7 @@ class MenuBoTest {
             .isThrownBy(() -> menuBo.create(menu));
     }
 
-    @DisplayName("메뉴의 가격은 각 상품의 가격의 합보다 클수없다.")
-    @Test
-    void notFoundProduct() {
-        //given
-        Product product = new Product();
-        product.setPrice(BigDecimal.valueOf(10000L));
-
-        final Menu menu = createMenu();
-        menu.setPrice(BigDecimal.valueOf(Long.MAX_VALUE));
-
-        given(menuGroupDao.existsById(menu.getMenuGroupId())).willReturn(true);
-        given(productDao.findById(anyLong())).willReturn(Optional.ofNullable(product));
-
-        //when then
-        Assertions.assertThatExceptionOfType(IllegalArgumentException.class)
-            .isThrownBy(() -> menuBo.create(menu));
-    }
-
-    @DisplayName("메뉴의 가격은 각 상품의 가격의 합보다 클수없다.")
+    @DisplayName("메뉴의 가격은 각 상품의 가격의 합보다 크다면, 예외가 발생한다.")
     @Test
     void pricelessThanProductSum() {
         //given

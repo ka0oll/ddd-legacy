@@ -44,7 +44,7 @@ class ProductBoTest {
         Assertions.assertThat(productBo.create(product)).isEqualTo(product);
     }
 
-    @DisplayName("상품 가격이 올바르지 못하면 등록할수 없다.")
+    @DisplayName("상품 가격을 올바르지 못한 상품을 등록하면 예외가 발생한다.")
     @ParameterizedTest
     @NullSource
     @ValueSource(strings = {"-1", "-10000"})

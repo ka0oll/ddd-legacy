@@ -59,7 +59,7 @@ class TableBoTest {
         Assertions.assertThat(tableBo.list()).containsAll(orderTables);
     }
 
-    @DisplayName("테이블 주문의 상태가 완료일 경우 테이블 이용여부를 변경할수 없다.")
+    @DisplayName("주문의 상태가 완료인 테이블의 이용여부를 변경시, 예외가 발생한다.")
     @ParameterizedTest
     @ValueSource(booleans = {true, false})
     void changeEmpty(boolean requestEmpty) {
@@ -81,7 +81,7 @@ class TableBoTest {
         Assertions.assertThat(tableBo.changeEmpty(savedOrderTable.getId(), requestOrderTable).isEmpty()).isEqualTo(requestEmpty);
     }
 
-    @DisplayName("테이블에 인원은 0명 미만일 경우 실패한다.")
+    @DisplayName("테이블에 인원은 0명 미만으로 변경시, 예외가 발생한다..")
     @ParameterizedTest
     @ValueSource(ints = {-1,-2,-3,-4})
     void guestEqualToGreaterThanZero(int numberOfGuests) {

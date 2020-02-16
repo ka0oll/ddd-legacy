@@ -90,7 +90,7 @@ class TableGroupBoTest {
             .isThrownBy(() -> tableGroupBo.create(tableGroup));
     }
 
-    @DisplayName("이미 묶어진 테이블은 다시 묶을수 없다.")
+    @DisplayName("이미 묶어진 테이블은 다시 묶을경우, 예외를 발생한다.")
     @Test
     void tableHasOnlyOneGroup() {
         //given
@@ -131,7 +131,7 @@ class TableGroupBoTest {
 
 
 
-    @DisplayName("주문의 상태가 완료일 경우만 테이블 묶을을 해제할수있다.")
+    @DisplayName("주문의 상태가 완료상태가 아닐경우 테이블 묶을을 해제시, 예외가 발생한다.")
     @Test
     void onlyCompleteStatusCanDelete() {
         //given
@@ -164,7 +164,7 @@ class TableGroupBoTest {
         given(orderDao.existsByOrderTableIdInAndOrderStatusIn(anyList(), anyList()))
             .willReturn(false);
 
-        //when
+        //wh
         tableGroupBo.delete(orderTable1.getTableGroupId());
 
         //then
